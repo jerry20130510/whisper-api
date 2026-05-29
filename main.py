@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # faster-whisper 比 openai-whisper 省記憶體，Render 免費方案才跑得動
 # base 模型約 145MB，適合 512MB 記憶體限制
-model = WhisperModel("base", device="cpu", compute_type="int8")
+model = WhisperModel("tiny", device="cpu", compute_type="int8")
 
 @app.route("/")
 def home():
