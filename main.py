@@ -5,10 +5,6 @@ import os
 
 app = Flask(__name__)
 
-# faster-whisper 比 openai-whisper 省記憶體，Render 免費方案才跑得動
-# base 模型約 145MB，適合 512MB 記憶體限制
-model = WhisperModel("tiny", device="cpu", compute_type="int8")
-
 @app.route("/")
 def home():
     return "Whisper API is running"
@@ -26,8 +22,11 @@ def transcribe():
         temp_path = tmp.name
 
     try:
+        # 每次請求才載入，用完釋放
+        model = WhisperModel("tiny", device="cpu", compute_type="int8")
         segments, info = model.transcribe(temp_path, language="zh")
         text = "".join(segment.text for segment in segments)
+        del model
         return jsonify({"text": text})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
