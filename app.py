@@ -3,7 +3,7 @@ import whisper
 import tempfile
 import os
 
-app = Flask(**name**)
+app = Flask(__name__)
 
 model = whisper.load_model("base")
 
