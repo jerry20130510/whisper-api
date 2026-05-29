@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: whisper-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python -c "from faster_whisper import WhisperModel; WhisperModel('tiny', device='cpu', compute_type='int8')"
+    startCommand: gunicorn main:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
